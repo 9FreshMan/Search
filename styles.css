@@ -1,0 +1,104 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #080808;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+
+
+form {
+    color: #fff;
+    background-color: #181A1C;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+}
+
+::placeholder {
+    color: #ffffff;
+    /* Измените этот цвет на желаемый */
+}
+
+select,
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+    text-align: center;
+    font-size: 20px;
+    border: none;
+    height: 30px;
+    color: #fff;
+    border-radius: 25px;
+    background-color: #00B67B;
+}
+
+button {
+    background-color: #00B67B;
+    color: #ffffff;
+    border-radius: 25px;
+    height: 30px;
+    border: none;
+    font-weight: 600;
+}
+
+
+label,
+select,
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Медиа-запрос для оптимизации для мобильных устройств */
+@media screen and (max-width: 700px) {
+    form {
+        max-width: 90%;
+    }
+}
+
+.location-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.vehicle-types-container {
+    display: block;
+    column-count: 2;
+    column-gap: 20px;
+}
+
+.vehicle-types-container label {
+    margin-right: 15px;
+}
+
+.logo {
+    max-width: 400px;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Central Bot</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="index.js"></script>
+    <meta name="viewport" content="width=device-width">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+
+
+<body>
+    <img class="logo" src="image/logo.png" alt="">
+    <form action="/submit" method="post">
+
+        <!-- Поле ввода начальной локации -->
+        <div>
+            <label>Pick Up location</label>
+            <input type="text" id="start-location-input" list="search-datalist" autocomplete="off"
+                placeholder="Start Location" required>
+            <datalist id="search-datalist" size="2"></datalist>
+            <input type="number" id="start-location-radius" name="start-location-radius" placeholder="Start Radius"
+                required>
+            <button type="button" onclick="addStartLocation()">ADD LOCAION</button>
+        </div>
+
+        <div id="start-locations-container">
+            <!-- Здесь будут отображаться карточки начальных локаций -->
+        </div>
+
+        <hr>
+        <br>
+        <div>
+            <label>Delivery location</label>
+            <input type="text" id="end-location-input" list="search-datalist" autocomplete="off"
+                placeholder="End Location" required>
+            <datalist id="search-datalist" size="5"></datalist>
+            <input type="number" id="end-location-radius" name="end-location-radius" placeholder="End Radius" required>
+
+            <button type="button" onclick="addEndLocation()">ADD LOCATION</button>
+        </div>
+
+        <div id="end-locations-container">
+            <!-- Здесь будут отображаться карточки конечных локаций -->
+        </div>
+
+
+        <hr>
+        <br>
+        <!-- Выбор типа транспортного средства -->
+        <div style="text-align: center; font-size: 20px; font-weight: 600; padding-bottom: 20px;">Vehicle Type</div>
+        <label><input type="checkbox" name="vehicle-type" value="all">ALL (Default)</label>
+        <div class="vehicle-types-container">
+
+            <label><input type="checkbox" name="vehicle-type" value="ATV"> ATV</label>
+            <label><input type="checkbox" name="vehicle-type" value="boat"> Boat</label>
+            <label><input type="checkbox" name="vehicle-type" value="car"> Car</label>
+            <label><input type="checkbox" name="vehicle-type" value="heavy-equipment"> Heavy Equip</label>
+            <label><input type="checkbox" name="vehicle-type" value="large-yacht"> Large Yacht</label>
+            <label><input type="checkbox" name="vehicle-type" value="motorcycle"> Motorcycle</label>
+            <label><input type="checkbox" name="vehicle-type" value="pickup"> Pickup</label>
+            <label><input type="checkbox" name="vehicle-type" value="rv"> RV</label>
+            <label><input type="checkbox" name="vehicle-type" value="suv"> SUV</label>
+            <label><input type="checkbox" name="vehicle-type" value="travel-trailer"> Travel Trailer</label>
+            <label><input type="checkbox" name="vehicle-type" value="van"> Van</label>
+            <label><input type="checkbox" name="vehicle-type" value="other"> Other</label>
+
+        </div>
+
+        <hr>
+        <br>
+
+        <!-- Выбор состояния транспортного средства -->
+        <label for="trailer-type">Trailer Type</label>
+        <select id="trailer-type" name="trailer-type">
+            <option value="all">All (Default)</option>
+            <option value="open">Open</option>
+            <option value="enclosed">Enclosed</option>
+            <option value="enclosed">Driveaway</option>
+        </select>
+
+        <br>
+
+        <!-- Выбор состояния транспортного средства -->
+        <label for="vehicle-status">Vehicle Status</label>
+        <select id="vehicle-status" name="vehicle-status">
+            <option value="all">All (Default)</option>
+            <option value="operable">Operable</option>
+            <option value="inoperable">Inoperable</option>
+        </select>
+
+        <br>
+
+        <!-- Минимальное количество транспортных средств -->
+        <label for="min-vehicles">Min # of Vehicles</label>
+        <input type="number" id="min-vehicles" name="min-vehicles" min="1" max="10" value="1" required>
+
+        <br>
+
+        <!-- Максимальное количество транспортных средств -->
+        <label for="max-vehicles">Max # of Vehicles</label>
+        <input type="number" id="max-vehicles" name="max-vehicles" min="1" max="10" value="10" required>
+
+        <br>
+
+        <!-- Выбор даты доставки -->
+        <label for="delivery-date">Delivery Date</label>
+        <input type="date" id="delivery-date" name="delivery-date" min=="" value="" required>
+
+        <br>
+
+        <!-- Готовность к отправке -->
+        <label for="ready-to-ship">Ready to Ship Within</label>
+        <select id="ready-to-ship" name="ready-to-ship">
+            <option value="today">Today</option>
+            <option value="1day">1 day</option>
+            <option value="2days">2 days</option>
+            <option value="2days">3 days</option>
+            <option value="2days">4 days</option>
+            <option value="2days">5 days</option>
+            <option value="2days">6 days</option>
+            <option value="2days">7 days</option>
+            <option value="2days">10 days</option>
+            <option value="2days">14 days</option>
+            <option value="2days">30 days</option>
+            <option value="2days">60 days</option>
+            <!-- и так далее, можно добавить больше опций -->
+        </select>
+
+        <br>
+
+        <!-- Минимальная общая стоимость -->
+        <label for="min-total-pay">Min Total Pay</label>
+        <input type="number" id="min-total-pay" name="min-total-pay" value="0" required>
+
+        <br>
+
+        <!-- Минимальная ставка за транспортное средство за милю -->
+        <label for="min-rate-per-mile">Min rate per vehicle per mile</label>
+        <input type="number" id="min-rate-per-mile" name="min-rate-per-mile" value="0.1" required>
+
+        <br>
+
+        <!-- Кнопка отправки формы -->
+        <!-- <input type="submit" value="Отправить"> -->
+    </form>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    let tg = window.Telegram.WebApp;
+    tg.expand();
+    tg.MainButton.setText("DONE"); //изменяем текст кнопки иначе
+    tg.MainButton.textColor = "#F2F2F2"; //изменяем цвет текста кнопки
+    tg.MainButton.color = "#212426"; //изменяем цвет бэкграунда кнопки
+    tg.MainButton.show()
+    Telegram.WebApp.onEvent('mainButtonClicked', function () {
+        tg.sendData(document.getElementById("search-input").value + "\n" + document.getElementById("radius").value);
+        //при клике на основную кнопку отправляем данные в строковом виде
+    });
+
+</script>
+<script>
+
+    function createAutocomplete(data) {
+        var inputstart = document.getElementById('start-location-input');
+        var inputend = document.getElementById('end-location-input');
+        var datalist = document.getElementById('search-datalist');
+
+        var currentSearch = '';
+
+        inputstart.addEventListener('input', function () {
+            currentSearch = inputstart.value;
+            setTimeout(searchData, 500);
+        });
+        inputend.addEventListener('input', function () {
+            currentSearch = inputend.value;
+            setTimeout(searchData, 500);
+        });
+
+        function searchData(event) {
+            currentSearch = event.target.value;
+            datalist.innerHTML = '';
+
+            var matchingData = data.filter(function (item) {
+                return item.city.toLowerCase().startsWith(currentSearch.toLowerCase());
+            });
+
+            // Ограничьте количество отображаемых городов
+            var maxResults = 10;
+            var limitedData = matchingData.slice(0, maxResults);
+
+            var options = '';
+            for (var i = 0; i < limitedData.length; i++) {
+                options += '<option value="' + limitedData[i].city + ', ' + limitedData[i].state_id + '">';
+            }
+
+            datalist.innerHTML = options;
+        }
+    }
+
+    $(document).ready(function () {
+        var csvFile = 'uscities.csv';
+        getDataFromCSVFile(csvFile, function (data) {
+            createAutocomplete(data);
+        });
+    });
+
+</script>
+
+
+
+
+<script>
+    // Установка минимального значения для элемента input с типом date
+    var deliveryDateInput = document.getElementById("delivery-date");
+    var today = new Date();
+    var minDate = today.toISOString().slice(0, 10);
+    deliveryDateInput.min = minDate;
+
+    // Установка значения по умолчанию в американском формате "мм/дд/гггг"
+    var defaultDate = (today.getMonth() + 1).toString().padStart(2, '0') + '/' + today.getDate().toString().padStart(2, '0') + '/' + today.getFullYear();
+    deliveryDateInput.valueAsDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+</script>
+
+</html>
