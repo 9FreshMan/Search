@@ -171,13 +171,13 @@
 
         var currentSearch = '';
 
-        inputstart.addEventListener('input', function () {
+        inputstart.addEventListener('input', function (event) {
             currentSearch = inputstart.value;
-            setTimeout(searchData(event), 500);
+            setTimeout(function () { searchData(event); }, 500);
         });
-        inputend.addEventListener('input', function () {
+        inputend.addEventListener('input', function (event) {
             currentSearch = inputend.value;
-            setTimeout(searchData(event), 500);
+            setTimeout(function () { searchData(event); }, 500);
         });
 
         function searchData(event) {
