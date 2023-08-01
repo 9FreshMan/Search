@@ -173,11 +173,11 @@
 
         inputstart.addEventListener('input', function () {
             currentSearch = inputstart.value;
-            setTimeout(searchData, 50);
+            setTimeout(searchData(event), 500);
         });
         inputend.addEventListener('input', function () {
             currentSearch = inputend.value;
-            setTimeout(searchData, 50);
+            setTimeout(searchData(event), 500);
         });
 
         function searchData(event) {
