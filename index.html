@@ -361,7 +361,7 @@
     tg.MainButton.show()
     Telegram.WebApp.onEvent('mainButtonClicked', function () {
         tg.sendData(startlocations)
-        tg.sendData(document.getElementById("search-input").value + "\n" + document.getElementById("radius").value);
+       // tg.sendData(document.getElementById("search-input").value + "\n" + document.getElementById("radius").value);
         //при клике на основную кнопку отправляем данные в строковом виде
     });
 </script>
