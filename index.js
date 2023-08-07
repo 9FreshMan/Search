@@ -9,6 +9,17 @@ var deliverydate = ''
 var readytoshipwithin = ''
 var minpayment = 0
 var minpaymentpermile = 0
+import { Telegram } from 'https://telegram.org/js/telegram-web-app.js';
+  let tg = new Telegram();
+    tg.expand();
+    tg.MainButton.setText("DONE"); //изменяем текст кнопки иначе
+    tg.MainButton.textColor = "#00B67B"; //изменяем цвет текста кнопки
+    tg.MainButton.color = "#212426"; //изменяем цвет бэкграунда кнопки
+    tg.MainButton.show()
+    Telegram.WebApp.onEvent('mainButtonClicked', function () {
+        tg.sendData(startlocations);
+        //при клике на основную кнопку отправляем данные в строковом виде
+    });
 function getDataFromCSVFile(csvFile, callback) {
     $.ajax({
         url: csvFile,
