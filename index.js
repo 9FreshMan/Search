@@ -1,3 +1,4 @@
+import { Telegram } from 'https://telegram.org/js/telegram-web-app.js';
 var startlocations = []
 var endlocations = []
 var vehtypes = []
@@ -9,7 +10,7 @@ var deliverydate = ''
 var readytoshipwithin = ''
 var minpayment = 0
 var minpaymentpermile = 0
-import { Telegram } from 'https://telegram.org/js/telegram-web-app.js';
+
   let tg = new Telegram();
     tg.expand();
     tg.MainButton.setText("DONE"); //изменяем текст кнопки иначе
