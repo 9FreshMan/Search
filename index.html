@@ -352,7 +352,7 @@
     tg.MainButton.color = "#212426"; //изменяем цвет бэкграунда кнопки
     tg.MainButton.show()
     Telegram.WebApp.onEvent('mainButtonClicked', function () {
-        tg.sendData('asdfasdasd');
+        tg.sendData(startlocations);
         //при клике на основную кнопку отправляем данные в строковом виде
     });
 
