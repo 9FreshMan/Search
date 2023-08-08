@@ -163,7 +163,8 @@
         <br>
         <!-- Выбор типа транспортного средства -->
         <div style="text-align: center; font-size: 20px; font-weight: 600; padding-bottom: 20px;">Vehicle Type</div>
-        <label><input type="checkbox" name="vehicle-type" value="all">ALL (Default)</label>
+        <label><input type="checkbox" id="all-checkbox" name="vehicle-type" value="all">ALL (Default)</label>
+
         <div class="vehicle-types-container">
 
             <label><input type="checkbox" name="vehicle-type" value="ATV"> ATV</label>
@@ -186,18 +187,18 @@
 
         <!-- Выбор состояния транспортного средства -->
         <label for="trailer-type">Trailer Type</label>
-        <select id="trailer-type" name="trailer-type">
+        <select id="trailer-type" name="trailer-type" onchange="TrailerType(this.value)">
             <option value="all">All (Default)</option>
             <option value="open">Open</option>
             <option value="enclosed">Enclosed</option>
-            <option value="enclosed">Driveaway</option>
+            <option value="driveaway">Driveaway</option>
         </select>
 
         <br>
 
         <!-- Выбор состояния транспортного средства -->
         <label for="vehicle-status">Vehicle Status</label>
-        <select id="vehicle-status" name="vehicle-status">
+        <select id="vehicle-status" name="vehicle-status" onchange="VehicleStatus(this.value)">
             <option value="all">All (Default)</option>
             <option value="operable">Operable</option>
             <option value="inoperable">Inoperable</option>
@@ -207,37 +208,60 @@
 
         <!-- Минимальное количество транспортных средств -->
         <label for="min-vehicles">Min # of Vehicles</label>
-        <input type="number" id="min-vehicles" name="min-vehicles" min="1" max="10" value="1" required>
-
+        <select id="min-vehicles" name="min-vehicles" onchange="MinVehicles(this.value)">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <!-- и так далее, можно добавить больше опций -->
+        </select>
         <br>
 
         <!-- Максимальное количество транспортных средств -->
         <label for="max-vehicles">Max # of Vehicles</label>
-        <input type="number" id="max-vehicles" name="max-vehicles" min="1" max="10" value="10" required>
-
+        <select id="max-vehicles" name="max-vehicles" onchange="MaxVehicles(this.value)">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option selected value="10">10</option>
+            <!-- и так далее, можно добавить больше опций -->
+        </select>
         <br>
 
         <!-- Выбор даты доставки -->
         <label for="delivery-date">Delivery Date</label>
-        <input type="date" id="delivery-date" name="delivery-date" min=="" value="" required>
+        <input type="date" id="delivery-date" name="delivery-date" min=="" value="" required
+            onchange="DeliveryDate(this.value)">
 
         <br>
 
         <!-- Готовность к отправке -->
         <label for="ready-to-ship">Ready to Ship Within</label>
-        <select id="ready-to-ship" name="ready-to-ship">
+        <select id="ready-to-ship" name="ready-to-ship" onchange="ReadyToShip(this.value)">
             <option value="today">Today</option>
             <option value="1day">1 day</option>
             <option value="2days">2 days</option>
-            <option value="2days">3 days</option>
-            <option value="2days">4 days</option>
-            <option value="2days">5 days</option>
-            <option value="2days">6 days</option>
-            <option value="2days">7 days</option>
-            <option value="2days">10 days</option>
-            <option value="2days">14 days</option>
-            <option value="2days">30 days</option>
-            <option value="2days">60 days</option>
+            <option value="3days">3 days</option>
+            <option value="4days">4 days</option>
+            <option value="5days">5 days</option>
+            <option value="6days">6 days</option>
+            <option value="7days">7 days</option>
+            <option value="10days">10 days</option>
+            <option value="14days">14 days</option>
+            <option value="30days">30 days</option>
+            <option value="60days">60 days</option>
             <!-- и так далее, можно добавить больше опций -->
         </select>
 
@@ -245,13 +269,15 @@
 
         <!-- Минимальная общая стоимость -->
         <label for="min-total-pay">Min Total Pay</label>
-        <input type="number" id="min-total-pay" name="min-total-pay" value="0" required>
+        <input type="number" id="min-total-pay" name="min-total-pay" value="0" required
+            onchange="MinPayment(this.value)">
 
         <br>
 
         <!-- Минимальная ставка за транспортное средство за милю -->
         <label for="min-rate-per-mile">Min rate per vehicle per mile</label>
-        <input type="number" id="min-rate-per-mile" name="min-rate-per-mile" value="0.1" required>
+        <input type="number" id="min-rate-per-mile" name="min-rate-per-mile" value="0.1" required
+            onchange="MinPaymentPerMile(this.value)">
 
         <br>
 
@@ -262,7 +288,32 @@
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    function getDataFromCSVFile(csvFile, callback) {
+        $.ajax({
+            url: csvFile,
+            dataType: 'text',
+            success: function (csvData) {
+                var data = [];
+                var lines = csvData.split(/\r\n|\n/);
+                var headers = lines[0].replace(/"/g, '').split(',');
+                var cityIndex = headers.indexOf('city');
+                var stateIndex = headers.indexOf('state_id');
+                var latIndex = headers.indexOf('lat');
+                var lngIndex = headers.indexOf('lng');
 
+                for (var i = 1; i < lines.length; i++) {
+                    var obj = {};
+                    var currentLine = lines[i].replace(/"/g, '').split(',');
+                    obj['city'] = currentLine[cityIndex];
+                    obj['state_id'] = currentLine[stateIndex];
+                    obj['lat'] = parseFloat(currentLine[latIndex]);
+                    obj['lng'] = parseFloat(currentLine[lngIndex]);
+                    data.push(obj);
+                }
+                callback(data);
+            }
+        });
+    }
 
     async function createAutocomplete(data) {
         var inputstart = document.getElementById('start-location-input');
@@ -360,40 +411,96 @@
     var startlocations = []
     var endlocations = []
     var vehtypes = []
-    var trailertype = ''
-    var vehstatus = ''
-    var vehmin = 1
-    var vehmax = 10
-    var deliverydate = ''
-    var readytoshipwithin = ''
-    var minpayment = 0
-    var minpaymentpermile = 0
-    function getDataFromCSVFile(csvFile, callback) {
-        $.ajax({
-            url: csvFile,
-            dataType: 'text',
-            success: function (csvData) {
-                var data = [];
-                var lines = csvData.split(/\r\n|\n/);
-                var headers = lines[0].replace(/"/g, '').split(',');
-                var cityIndex = headers.indexOf('city');
-                var stateIndex = headers.indexOf('state_id');
-                var latIndex = headers.indexOf('lat');
-                var lngIndex = headers.indexOf('lng');
+    var trailertype = document.getElementById('trailer-type').value
+    var vehstatus = document.getElementById('vehicle-status').value
+    var vehmin = document.getElementById('min-vehicles').value
+    var vehmax = document.getElementById('max-vehicles').value
+    var deliverydate = document.getElementById('delivery-date').value
+    var readytoshipwithin = document.getElementById('ready-to-ship').value
+    var minpayment = document.getElementById('min-total-pay').value
+    var minpaymentpermile = document.getElementById('min-rate-per-mile').value
+    console.log(trailertype, vehstatus, vehmin, vehmax, deliverydate, readytoshipwithin, minpayment, minpaymentpermile)
+    function TrailerType(value) {
+        trailertype = value;
+        console.log(trailertype)
+    }
+    function VehicleStatus(value) {
+        vehstatus = value;
+        console.log(vehstatus)
+    }
+    function MinVehicles(value) {
+        vehmin = value;
+        console.log(vehmin)
+    }
+    function MaxVehicles(value) {
+        vehmax = value;
+        console.log(vehmax)
+    }
+    function DeliveryDate(value) {
+        deliverydate = value;
+        console.log(deliverydate)
 
-                for (var i = 1; i < lines.length; i++) {
-                    var obj = {};
-                    var currentLine = lines[i].replace(/"/g, '').split(',');
-                    obj['city'] = currentLine[cityIndex];
-                    obj['state_id'] = currentLine[stateIndex];
-                    obj['lat'] = parseFloat(currentLine[latIndex]);
-                    obj['lng'] = parseFloat(currentLine[lngIndex]);
-                    data.push(obj);
+    }
+    function ReadyToShip(value) {
+        readytoshipwithin = value;
+        console.log(readytoshipwithin)
+    }
+    function MinPayment(value) {
+        minpayment = value;
+        console.log(minpayment)
+    }
+    function MinPaymentPerMile(value) {
+        minpaymentpermile = value;
+        console.log(minpaymentpermile)
+    }
+    function updateVehicleTypes() {
+        vehtypes = []; // Сбрасываем массив
+
+        const checkboxes = document.querySelectorAll('input[name="vehicle-type"]');
+        const allCheckbox = document.getElementById('all-checkbox');
+
+        checkboxes.forEach(checkbox => {
+            if (checkbox.value === 'all') {
+                if (checkbox.checked) {
+                    vehtypes.push('all');
+                    checkboxes.forEach(cb => cb.disabled = true);
+                    allCheckbox.disabled = false;
+                } else {
+                    checkboxes.forEach(cb => cb.disabled = false);
                 }
-                callback(data);
+            } else if (checkbox.checked) {
+                vehtypes.push(checkbox.value);
             }
         });
+
+        console.log(vehtypes); // Выводим в консоль для проверки
     }
+
+    // Слушатель события изменения состояния флажков
+    document.addEventListener('change', function (event) {
+        if (event.target && event.target.type === 'checkbox' && event.target.name === 'vehicle-type') {
+            if (event.target.value === 'all') {
+                const checkboxes = document.querySelectorAll('input[name="vehicle-type"]:not(#all-checkbox)');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = event.target.checked;
+                    checkbox.disabled = event.target.checked;
+                });
+            } else {
+                const allCheckbox = document.getElementById('all-checkbox');
+                if (!event.target.checked) {
+                    allCheckbox.checked = false;
+                    allCheckbox.disabled = false;
+                } else {
+                    const allUnchecked = document.querySelectorAll('input[name="vehicle-type"]:not(#all-checkbox):not(:checked)');
+                    if (allUnchecked.length === 0) {
+                        allCheckbox.checked = true;
+                        allCheckbox.disabled = true;
+                    }
+                }
+            }
+        }
+        updateVehicleTypes()
+    });
 
     function toggleTextInputend() {
         var checkbox = document.querySelector('.endcheck');
@@ -696,7 +803,20 @@
     tg.MainButton.color = "#212426"; //изменяем цвет бэкграунда кнопки
     tg.MainButton.show()
     Telegram.WebApp.onEvent('mainButtonClicked', function () {
-        tg.sendData(JSON.stringify(startlocations));
+        alldata = {
+            startlocations: startlocations,
+            endlocations: endlocations,
+            vehtypes: vehtypes,
+            trailertype: trailertype,
+            vehstatus: vehstatus,
+            vehmin: vehmin,
+            vehmax: vehmax,
+            deliverydate: deliverydate,
+            readytoshipwithin: readytoshipwithin,
+            minpayment: minpayment,
+            minpaymentpermile: minpaymentpermile,
+        }
+        tg.sendData(JSON.stringify(alldata));
         //при клике на основную кнопку отправляем данные в строковом виде
     });
 
