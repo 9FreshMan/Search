@@ -79,7 +79,7 @@
             <datalist id="search-datalist" size="2"></datalist>
             <input type="number" id="start-location-radius" name="start-location-radius" placeholder="Start Radius"
                 required>
-            <button type="button" onclick="addStartLocation()">ADD LOCATION</button>
+            <button type="button" onclick="addStartLocation()">ADD LOCAION</button>
         </div>
 
         <div id="start-locations-container">
@@ -167,7 +167,7 @@
 
         <div class="vehicle-types-container">
 
-           <label><input type="checkbox" name="vehicle-type" value="ATV"> ATV</label>
+            <label><input type="checkbox" name="vehicle-type" value="ATV"> ATV</label>
             <label><input type="checkbox" name="vehicle-type" value="BOAT"> Boat</label>
             <label><input type="checkbox" name="vehicle-type" value="CAR"> Car</label>
             <label><input type="checkbox" name="vehicle-type" value="HEAVY_EQUIPMENT"> Heavy Equip</label>
@@ -250,19 +250,18 @@
         <!-- Готовность к отправке -->
         <label for="ready-to-ship">Ready to Ship Within</label>
         <select id="ready-to-ship" name="ready-to-ship" onchange="ReadyToShip(this.value)">
-            <option value="all">All(Default)</option>
-            <option value="0">today</option>
-            <option value="1">1 days</option>
-            <option value="2">2 days</option>
-            <option value="3">3 days</option>
-            <option value="4">4 days</option>
-            <option value="5">5 days</option>
-            <option value="6">6 days</option>
-            <option value="7">7 days</option>
-            <option value="10">10 days</option>
-            <option value="14">14 days</option>
-            <option value="30">30 days</option>
-            <option value="60">60 days</option>
+            <option value="today">Today</option>
+            <option value="1day">1 day</option>
+            <option value="2days">2 days</option>
+            <option value="3days">3 days</option>
+            <option value="4days">4 days</option>
+            <option value="5days">5 days</option>
+            <option value="6days">6 days</option>
+            <option value="7days">7 days</option>
+            <option value="10days">10 days</option>
+            <option value="14days">14 days</option>
+            <option value="30days">30 days</option>
+            <option value="60days">60 days</option>
             <!-- и так далее, можно добавить больше опций -->
         </select>
 
@@ -270,14 +269,14 @@
 
         <!-- Минимальная общая стоимость -->
         <label for="min-total-pay">Min Total Pay</label>
-        <input type="number" id="min-total-pay" name="min-total-pay" value="400" required
+        <input type="number" id="min-total-pay" name="min-total-pay" value="0" required
             onchange="MinPayment(this.value)">
 
         <br>
 
         <!-- Минимальная ставка за транспортное средство за милю -->
         <label for="min-rate-per-mile">Min rate per vehicle per mile</label>
-        <input type="number" id="min-rate-per-mile" name="min-rate-per-mile" value="0.55" required
+        <input type="number" id="min-rate-per-mile" name="min-rate-per-mile" value="0.1" required
             onchange="MinPaymentPerMile(this.value)">
 
         <br>
@@ -389,8 +388,8 @@
     deliveryDateInput.min = minDate;
 
     // Установка значения по умолчанию в американском формате "мм/дд/гггг"
-    // var defaultDate = (today.getMonth() + 1).toString().padStart(2, '0') + '/' + today.getDate().toString().padStart(2, '0') + '/' + today.getFullYear();
-    // deliveryDateInput.valueAsDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    var defaultDate = (today.getMonth() + 1).toString().padStart(2, '0') + '/' + today.getDate().toString().padStart(2, '0') + '/' + today.getFullYear();
+    deliveryDateInput.valueAsDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
 
 
@@ -685,11 +684,7 @@
                                 // Replace `saveLocationDataToJSONFile` with the actual function to save the data
 
                             }
-                            startlocations.push(locationData)
-                            console.log(startlocations)
-                            // Clear input fields after adding the location
-                            startLocationInput.value = "";
-                            startLocationRadius.value = "";
+
                             console.log(city, state, radius)
                             var locationCard = document.createElement("div");
                             locationCard.className = "location-card";
@@ -712,6 +707,8 @@
                                 }
                                 console.log(startlocations)
                             });
+                            startlocations.push(locationData)
+                            console.log(startlocations)
 
 
                             // Get all the button elements with class "Minus" inside the container
@@ -719,6 +716,9 @@
                             locationCard.appendChild(removeButton);
 
                             startLocationsContainer.appendChild(locationCard);
+                            // Clear input fields after adding the location
+                            startLocationInput.value = "";
+                            startLocationRadius.value = "";
                         }
                     })
             }
@@ -831,11 +831,8 @@
                                 // Replace `saveLocationDataToJSONFile` with the actual function to save the data
 
                             }
-                            endlocations.push(locationData)
-                            console.log(endlocations)
-                            // Clear input fields after adding the location
-                            endLocationInput.value = "";
-                            endLocationRadius.value = "";
+
+
                             var locationCard = document.createElement("div");
                             locationCard.className = "location-card";
 
@@ -858,13 +855,16 @@
                                 console.log(endlocations)
                             });
 
-
+                            endlocations.push(locationData)
+                            console.log(endlocations)
                             // Get all the button elements with class "Minus" inside the container
 
                             locationCard.appendChild(removeButton);
 
                             endLocationsContainer.appendChild(locationCard);
-
+                            // Clear input fields after adding the location
+                            endLocationInput.value = "";
+                            endLocationRadius.value = "";
 
                         }
 
