@@ -16,7 +16,7 @@
 <body>
     <img class="logo" src="image/logo.png" alt="">
     <form action="/submit" method="post">
-        <input type="text" id="searchname" placeholder="SEARCH NAME" maxlength="25">
+        <input type="text" id="sname" placeholder="SEARCH NAME" maxlength="25" onchange="Sname(this.value)">
         <!-- Поле ввода начальной локации -->
         <div>
             <label>Pick Up location</label>
@@ -408,7 +408,7 @@
 </script>
 
 <script>
-
+    var sname = document.getElementById('sname').value
 
     var startlocations = []
     var endlocations = []
@@ -425,6 +425,10 @@
     function TrailerType(value) {
         trailertype = value;
         console.log(trailertype)
+    }
+    function Sname(value) {
+        sname = value;
+        console.log(sname)
     }
     function VehicleStatus(value) {
         vehstatus = value;
@@ -578,7 +582,7 @@
 
     // Function to add start location to JSON file and display it on the page
     function addStartLocation() {
-        console.log(searchname)
+        console.log(sname)
         var startLocationInput = document.getElementById("start-location-input");
         var startLocationRadius = document.getElementById("start-location-radius");
         var startLocationsContainer = document.getElementById("start-locations-container");
@@ -885,9 +889,8 @@
     tg.MainButton.color = "#212426"; //изменяем цвет бэкграунда кнопки
     tg.MainButton.show()
     Telegram.WebApp.onEvent('mainButtonClicked', function () {
-        var searchname = document.getElementById('searchname').value
         alldata = {
-            searchname: searchname,
+            sname: sname,
             startlocations: startlocations,
             endlocations: endlocations,
             vehtypes: vehtypes,
