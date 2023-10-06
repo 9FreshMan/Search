@@ -16,7 +16,7 @@
 <body>
     <img class="logo" src="image/logo.png" alt="">
     <form action="/submit" method="post">
-
+        <input type="text" id="searchname" placeholder="SEARCH NAME">
         <!-- Поле ввода начальной локации -->
         <div>
             <label>Pick Up location</label>
@@ -408,6 +408,7 @@
 </script>
 
 <script>
+    var searchname = document.getElementById('searchname').value
     var startlocations = []
     var endlocations = []
     var vehtypes = []
@@ -884,6 +885,7 @@
     tg.MainButton.show()
     Telegram.WebApp.onEvent('mainButtonClicked', function () {
         alldata = {
+            searchname: searchname,
             startlocations: startlocations,
             endlocations: endlocations,
             vehtypes: vehtypes,
