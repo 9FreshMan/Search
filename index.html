@@ -20,10 +20,18 @@
         <!-- Поле ввода начальной локации -->
         <div>
             <label>Pick Up location</label>
+
             <label>City<label class="switch">
                     <input type="checkbox" class="startcheck" onchange="toggleTextInputstart()">
                     <span class="slider round"></span>
-                </label>STATE</label>
+                </label>STATE <button type="button" onclick="addNortheast(true)">NorthEast</button><button type="button"
+                    onclick="addSouthEast(true)">SouthEast</button><button type="button"
+                    onclick="addMidWest(true)">Midwest
+                    Plains</button><button type="button" onclick="addSouth(true)">South</button><button type="button"
+                    onclick="addNorthWest(true)">NorthWest</button><button type="button"
+                    onclick="addSouthWest(true)">SouthWest</button></label>
+
+
             <select id="start-location-input-state" style="display: none;">
                 <option value="AL">Alabama</option>
                 <option value="AZ">Arizona</option>
@@ -79,7 +87,7 @@
             <datalist id="search-datalist" size="2"></datalist>
             <input type="number" id="start-location-radius" name="start-location-radius" placeholder="Start Radius"
                 required>
-            <button type="button" onclick="addStartLocation()">ADD LOCAION</button>
+            <button type="button" onclick="addStartLocation()">ADD LOCATION</button>
         </div>
 
         <div id="start-locations-container">
@@ -93,7 +101,12 @@
             <label>CITY<label class="switch">
                     <input type="checkbox" class="endcheck" onchange="toggleTextInputend()">
                     <span class="slider round"></span>
-                </label>STATE</label>
+                </label>STATE <button type="button" onclick="addNortheast(false)">NorthEast</button><button
+                    type="button" onclick="addSouthEast(false)">SouthEast</button><button type="button"
+                    onclick="addMidWest(false)">Midwest
+                    Plains</button><button type="button" onclick="addSouth(false)">South</button><button type="button"
+                    onclick="addNorthWest(false)">NorthWest</button><button type="button"
+                    onclick="addSouthWest(false)">SouthWest</button></label>
 
             <select id="end-location-input-state" style="display: none;">
                 <option value="AL">Alabama</option>
@@ -578,7 +591,735 @@
             });
         });
     }
+    function addSouthWest(startend) {
+        var states = ['AZ', 'CA', 'CO', 'NM', 'NV', 'UT']
+        if (startend == true) {
+            var startLocationInput = document.getElementById("start-location-input");
+            var startLocationRadius = document.getElementById("start-location-radius");
+            var startLocationsContainer = document.getElementById("start-locations-container");
+            var startstate = document.getElementById("start-location-input-state")
 
+            states.forEach(function (x) {
+                var hasAL = startlocations.some(function (location) {
+                    return location.state === x;
+                });
+
+                if (hasAL) {
+                    startLocationInput.value = "";
+                    startLocationRadius.value = "";
+                    return
+                }
+                var locationCard = document.createElement("div");
+                locationCard.className = "location-card";
+
+                locationCard.textContent = x;
+
+                var removeButton = document.createElement("button");
+                removeButton.textContent = "X";
+                removeButton.classList.add("Minus");
+                removeButton.id = startlocations.length
+                removeButton.addEventListener("click", function () {
+                    startLocationsContainer.removeChild(locationCard);
+                    console.log(removeButton.id)
+                    startlocations.splice(parseInt(removeButton.id), 1)
+                    var minusButtons = startLocationsContainer.getElementsByClassName("Minus");
+
+                    // Loop through each button and update its ID
+                    for (var i = 0; i < minusButtons.length; i++) {
+                        minusButtons[i].id = i.toString();
+                    }
+                    console.log(startlocations)
+                });
+
+
+                // Get all the button elements with class "Minus" inside the container
+
+                locationCard.appendChild(removeButton);
+
+                startLocationsContainer.appendChild(locationCard);
+                var locationData = {
+                    state: x,
+                    city: "",
+                    lat: 0.0,
+                    lng: 0.0,
+                    radius: 0,
+                };
+                startlocations.push(locationData)
+                console.log(startlocations)
+                // Clear input fields after adding the location
+                startLocationInput.value = "";
+                startLocationRadius.value = "";
+
+
+            });
+        }
+        else {
+            var endLocationInput = document.getElementById("end-location-input");
+            var endLocationRadius = document.getElementById("end-location-radius");
+            var endLocationsContainer = document.getElementById("end-locations-container");
+            var endstate = document.getElementById("end-location-input-state")
+            states.forEach(function (x) {
+                var hasAL = endlocations.some(function (location) {
+                    return location.state === x;
+                });
+
+                if (hasAL) {
+                    endLocationInput.value = "";
+                    endLocationRadius.value = "";
+                    return
+                }
+                var locationCard = document.createElement("div");
+                locationCard.className = "location-card";
+
+                locationCard.textContent = x;
+
+                var removeButton = document.createElement("button");
+                removeButton.textContent = "X";
+                removeButton.classList.add("Minus");
+                removeButton.id = endlocations.length
+                removeButton.addEventListener("click", function () {
+                    endLocationsContainer.removeChild(locationCard);
+                    console.log(removeButton.id)
+                    endlocations.splice(parseInt(removeButton.id), 1)
+                    var minusButtons = endLocationsContainer.getElementsByClassName("Minus");
+
+                    // Loop through each button and update its ID
+                    for (var i = 0; i < minusButtons.length; i++) {
+                        minusButtons[i].id = i.toString();
+                    }
+                    console.log(endlocations)
+                });
+
+
+                // Get all the button elements with class "Minus" inside the container
+
+                locationCard.appendChild(removeButton);
+
+                endLocationsContainer.appendChild(locationCard);
+                var locationData = {
+                    state: x,
+                    city: "",
+                    lat: 0.0,
+                    lng: 0.0,
+                    radius: 0,
+                };
+                endlocations.push(locationData)
+                console.log(endlocations)
+                // Clear input fields after adding the location
+                endLocationInput.value = "";
+                endLocationRadius.value = "";
+            });
+        }
+    }
+    function addNorthWest(startend) {
+
+        var states = ['ID', 'MT', 'OR', 'WA', 'WY']
+        if (startend == true) {
+            var startLocationInput = document.getElementById("start-location-input");
+            var startLocationRadius = document.getElementById("start-location-radius");
+            var startLocationsContainer = document.getElementById("start-locations-container");
+            var startstate = document.getElementById("start-location-input-state")
+
+            states.forEach(function (x) {
+                var hasAL = startlocations.some(function (location) {
+                    return location.state === x;
+                });
+
+                if (hasAL) {
+                    startLocationInput.value = "";
+                    startLocationRadius.value = "";
+                    return
+                }
+                var locationCard = document.createElement("div");
+                locationCard.className = "location-card";
+
+                locationCard.textContent = x;
+
+                var removeButton = document.createElement("button");
+                removeButton.textContent = "X";
+                removeButton.classList.add("Minus");
+                removeButton.id = startlocations.length
+                removeButton.addEventListener("click", function () {
+                    startLocationsContainer.removeChild(locationCard);
+                    console.log(removeButton.id)
+                    startlocations.splice(parseInt(removeButton.id), 1)
+                    var minusButtons = startLocationsContainer.getElementsByClassName("Minus");
+
+                    // Loop through each button and update its ID
+                    for (var i = 0; i < minusButtons.length; i++) {
+                        minusButtons[i].id = i.toString();
+                    }
+                    console.log(startlocations)
+                });
+
+
+                // Get all the button elements with class "Minus" inside the container
+
+                locationCard.appendChild(removeButton);
+
+                startLocationsContainer.appendChild(locationCard);
+                var locationData = {
+                    state: x,
+                    city: "",
+                    lat: 0.0,
+                    lng: 0.0,
+                    radius: 0,
+                };
+                startlocations.push(locationData)
+                console.log(startlocations)
+                // Clear input fields after adding the location
+                startLocationInput.value = "";
+                startLocationRadius.value = "";
+
+
+            });
+        }
+        else {
+            var endLocationInput = document.getElementById("end-location-input");
+            var endLocationRadius = document.getElementById("end-location-radius");
+            var endLocationsContainer = document.getElementById("end-locations-container");
+            var endstate = document.getElementById("end-location-input-state")
+            states.forEach(function (x) {
+                var hasAL = endlocations.some(function (location) {
+                    return location.state === x;
+                });
+
+                if (hasAL) {
+                    endLocationInput.value = "";
+                    endLocationRadius.value = "";
+                    return
+                }
+                var locationCard = document.createElement("div");
+                locationCard.className = "location-card";
+
+                locationCard.textContent = x;
+
+                var removeButton = document.createElement("button");
+                removeButton.textContent = "X";
+                removeButton.classList.add("Minus");
+                removeButton.id = endlocations.length
+                removeButton.addEventListener("click", function () {
+                    endLocationsContainer.removeChild(locationCard);
+                    console.log(removeButton.id)
+                    endlocations.splice(parseInt(removeButton.id), 1)
+                    var minusButtons = endLocationsContainer.getElementsByClassName("Minus");
+
+                    // Loop through each button and update its ID
+                    for (var i = 0; i < minusButtons.length; i++) {
+                        minusButtons[i].id = i.toString();
+                    }
+                    console.log(endlocations)
+                });
+
+
+                // Get all the button elements with class "Minus" inside the container
+
+                locationCard.appendChild(removeButton);
+
+                endLocationsContainer.appendChild(locationCard);
+                var locationData = {
+                    state: x,
+                    city: "",
+                    lat: 0.0,
+                    lng: 0.0,
+                    radius: 0,
+                };
+                endlocations.push(locationData)
+                console.log(endlocations)
+                // Clear input fields after adding the location
+                endLocationInput.value = "";
+                endLocationRadius.value = "";
+            });
+        }
+
+    }
+    function addSouth(startend) {
+
+        var states = ['AR', 'LA', 'MS', 'OK', 'TX']
+        if (startend == true) {
+            var startLocationInput = document.getElementById("start-location-input");
+            var startLocationRadius = document.getElementById("start-location-radius");
+            var startLocationsContainer = document.getElementById("start-locations-container");
+            var startstate = document.getElementById("start-location-input-state")
+
+            states.forEach(function (x) {
+                var hasAL = startlocations.some(function (location) {
+                    return location.state === x;
+                });
+
+                if (hasAL) {
+                    startLocationInput.value = "";
+                    startLocationRadius.value = "";
+                    return
+                }
+                var locationCard = document.createElement("div");
+                locationCard.className = "location-card";
+
+                locationCard.textContent = x;
+
+                var removeButton = document.createElement("button");
+                removeButton.textContent = "X";
+                removeButton.classList.add("Minus");
+                removeButton.id = startlocations.length
+                removeButton.addEventListener("click", function () {
+                    startLocationsContainer.removeChild(locationCard);
+                    console.log(removeButton.id)
+                    startlocations.splice(parseInt(removeButton.id), 1)
+                    var minusButtons = startLocationsContainer.getElementsByClassName("Minus");
+
+                    // Loop through each button and update its ID
+                    for (var i = 0; i < minusButtons.length; i++) {
+                        minusButtons[i].id = i.toString();
+                    }
+                    console.log(startlocations)
+                });
+
+
+                // Get all the button elements with class "Minus" inside the container
+
+                locationCard.appendChild(removeButton);
+
+                startLocationsContainer.appendChild(locationCard);
+                var locationData = {
+                    state: x,
+                    city: "",
+                    lat: 0.0,
+                    lng: 0.0,
+                    radius: 0,
+                };
+                startlocations.push(locationData)
+                console.log(startlocations)
+                // Clear input fields after adding the location
+                startLocationInput.value = "";
+                startLocationRadius.value = "";
+
+
+            });
+        }
+        else {
+            var endLocationInput = document.getElementById("end-location-input");
+            var endLocationRadius = document.getElementById("end-location-radius");
+            var endLocationsContainer = document.getElementById("end-locations-container");
+            var endstate = document.getElementById("end-location-input-state")
+            states.forEach(function (x) {
+                var hasAL = endlocations.some(function (location) {
+                    return location.state === x;
+                });
+
+                if (hasAL) {
+                    endLocationInput.value = "";
+                    endLocationRadius.value = "";
+                    return
+                }
+                var locationCard = document.createElement("div");
+                locationCard.className = "location-card";
+
+                locationCard.textContent = x;
+
+                var removeButton = document.createElement("button");
+                removeButton.textContent = "X";
+                removeButton.classList.add("Minus");
+                removeButton.id = endlocations.length
+                removeButton.addEventListener("click", function () {
+                    endLocationsContainer.removeChild(locationCard);
+                    console.log(removeButton.id)
+                    endlocations.splice(parseInt(removeButton.id), 1)
+                    var minusButtons = endLocationsContainer.getElementsByClassName("Minus");
+
+                    // Loop through each button and update its ID
+                    for (var i = 0; i < minusButtons.length; i++) {
+                        minusButtons[i].id = i.toString();
+                    }
+                    console.log(endlocations)
+                });
+
+
+                // Get all the button elements with class "Minus" inside the container
+
+                locationCard.appendChild(removeButton);
+
+                endLocationsContainer.appendChild(locationCard);
+                var locationData = {
+                    state: x,
+                    city: "",
+                    lat: 0.0,
+                    lng: 0.0,
+                    radius: 0,
+                };
+                endlocations.push(locationData)
+                console.log(endlocations)
+                // Clear input fields after adding the location
+                endLocationInput.value = "";
+                endLocationRadius.value = "";
+            });
+        }
+
+    }
+    function addMidWest(startend) {
+
+        var states = ['IA', 'IL', 'IN', 'KS', 'MI', 'MN', 'MO', 'ND', 'NE', 'OH', 'SD', 'WI']
+        if (startend == true) {
+            var startLocationInput = document.getElementById("start-location-input");
+            var startLocationRadius = document.getElementById("start-location-radius");
+            var startLocationsContainer = document.getElementById("start-locations-container");
+            var startstate = document.getElementById("start-location-input-state")
+
+            states.forEach(function (x) {
+                var hasAL = startlocations.some(function (location) {
+                    return location.state === x;
+                });
+
+                if (hasAL) {
+                    startLocationInput.value = "";
+                    startLocationRadius.value = "";
+                    return
+                }
+                var locationCard = document.createElement("div");
+                locationCard.className = "location-card";
+
+                locationCard.textContent = x;
+
+                var removeButton = document.createElement("button");
+                removeButton.textContent = "X";
+                removeButton.classList.add("Minus");
+                removeButton.id = startlocations.length
+                removeButton.addEventListener("click", function () {
+                    startLocationsContainer.removeChild(locationCard);
+                    console.log(removeButton.id)
+                    startlocations.splice(parseInt(removeButton.id), 1)
+                    var minusButtons = startLocationsContainer.getElementsByClassName("Minus");
+
+                    // Loop through each button and update its ID
+                    for (var i = 0; i < minusButtons.length; i++) {
+                        minusButtons[i].id = i.toString();
+                    }
+                    console.log(startlocations)
+                });
+
+
+                // Get all the button elements with class "Minus" inside the container
+
+                locationCard.appendChild(removeButton);
+
+                startLocationsContainer.appendChild(locationCard);
+                var locationData = {
+                    state: x,
+                    city: "",
+                    lat: 0.0,
+                    lng: 0.0,
+                    radius: 0,
+                };
+                startlocations.push(locationData)
+                console.log(startlocations)
+                // Clear input fields after adding the location
+                startLocationInput.value = "";
+                startLocationRadius.value = "";
+
+
+            });
+        }
+        else {
+            var endLocationInput = document.getElementById("end-location-input");
+            var endLocationRadius = document.getElementById("end-location-radius");
+            var endLocationsContainer = document.getElementById("end-locations-container");
+            var endstate = document.getElementById("end-location-input-state")
+            states.forEach(function (x) {
+                var hasAL = endlocations.some(function (location) {
+                    return location.state === x;
+                });
+
+                if (hasAL) {
+                    endLocationInput.value = "";
+                    endLocationRadius.value = "";
+                    return
+                }
+                var locationCard = document.createElement("div");
+                locationCard.className = "location-card";
+
+                locationCard.textContent = x;
+
+                var removeButton = document.createElement("button");
+                removeButton.textContent = "X";
+                removeButton.classList.add("Minus");
+                removeButton.id = endlocations.length
+                removeButton.addEventListener("click", function () {
+                    endLocationsContainer.removeChild(locationCard);
+                    console.log(removeButton.id)
+                    endlocations.splice(parseInt(removeButton.id), 1)
+                    var minusButtons = endLocationsContainer.getElementsByClassName("Minus");
+
+                    // Loop through each button and update its ID
+                    for (var i = 0; i < minusButtons.length; i++) {
+                        minusButtons[i].id = i.toString();
+                    }
+                    console.log(endlocations)
+                });
+
+
+                // Get all the button elements with class "Minus" inside the container
+
+                locationCard.appendChild(removeButton);
+
+                endLocationsContainer.appendChild(locationCard);
+                var locationData = {
+                    state: x,
+                    city: "",
+                    lat: 0.0,
+                    lng: 0.0,
+                    radius: 0,
+                };
+                endlocations.push(locationData)
+                console.log(endlocations)
+                // Clear input fields after adding the location
+                endLocationInput.value = "";
+                endLocationRadius.value = "";
+            });
+        }
+
+    }
+    function addSouthEast(startend) {
+
+        var states = ['AL', 'DC', 'FL', 'GA', 'KY', 'MD', 'NC', 'SC', 'TN', 'VA', 'WV']
+        if (startend == true) {
+            var startLocationInput = document.getElementById("start-location-input");
+            var startLocationRadius = document.getElementById("start-location-radius");
+            var startLocationsContainer = document.getElementById("start-locations-container");
+            var startstate = document.getElementById("start-location-input-state")
+
+            states.forEach(function (x) {
+                var hasAL = startlocations.some(function (location) {
+                    return location.state === x;
+                });
+
+                if (hasAL) {
+                    startLocationInput.value = "";
+                    startLocationRadius.value = "";
+                    return
+                }
+                var locationCard = document.createElement("div");
+                locationCard.className = "location-card";
+
+                locationCard.textContent = x;
+
+                var removeButton = document.createElement("button");
+                removeButton.textContent = "X";
+                removeButton.classList.add("Minus");
+                removeButton.id = startlocations.length
+                removeButton.addEventListener("click", function () {
+                    startLocationsContainer.removeChild(locationCard);
+                    console.log(removeButton.id)
+                    startlocations.splice(parseInt(removeButton.id), 1)
+                    var minusButtons = startLocationsContainer.getElementsByClassName("Minus");
+
+                    // Loop through each button and update its ID
+                    for (var i = 0; i < minusButtons.length; i++) {
+                        minusButtons[i].id = i.toString();
+                    }
+                    console.log(startlocations)
+                });
+
+
+                // Get all the button elements with class "Minus" inside the container
+
+                locationCard.appendChild(removeButton);
+
+                startLocationsContainer.appendChild(locationCard);
+                var locationData = {
+                    state: x,
+                    city: "",
+                    lat: 0.0,
+                    lng: 0.0,
+                    radius: 0,
+                };
+                startlocations.push(locationData)
+                console.log(startlocations)
+                // Clear input fields after adding the location
+                startLocationInput.value = "";
+                startLocationRadius.value = "";
+
+
+            });
+        }
+        else {
+            var endLocationInput = document.getElementById("end-location-input");
+            var endLocationRadius = document.getElementById("end-location-radius");
+            var endLocationsContainer = document.getElementById("end-locations-container");
+            var endstate = document.getElementById("end-location-input-state")
+            states.forEach(function (x) {
+                var hasAL = endlocations.some(function (location) {
+                    return location.state === x;
+                });
+
+                if (hasAL) {
+                    endLocationInput.value = "";
+                    endLocationRadius.value = "";
+                    return
+                }
+                var locationCard = document.createElement("div");
+                locationCard.className = "location-card";
+
+                locationCard.textContent = x;
+
+                var removeButton = document.createElement("button");
+                removeButton.textContent = "X";
+                removeButton.classList.add("Minus");
+                removeButton.id = endlocations.length
+                removeButton.addEventListener("click", function () {
+                    endLocationsContainer.removeChild(locationCard);
+                    console.log(removeButton.id)
+                    endlocations.splice(parseInt(removeButton.id), 1)
+                    var minusButtons = endLocationsContainer.getElementsByClassName("Minus");
+
+                    // Loop through each button and update its ID
+                    for (var i = 0; i < minusButtons.length; i++) {
+                        minusButtons[i].id = i.toString();
+                    }
+                    console.log(endlocations)
+                });
+
+
+                // Get all the button elements with class "Minus" inside the container
+
+                locationCard.appendChild(removeButton);
+
+                endLocationsContainer.appendChild(locationCard);
+                var locationData = {
+                    state: x,
+                    city: "",
+                    lat: 0.0,
+                    lng: 0.0,
+                    radius: 0,
+                };
+                endlocations.push(locationData)
+                console.log(endlocations)
+                // Clear input fields after adding the location
+                endLocationInput.value = "";
+                endLocationRadius.value = "";
+            });
+        }
+
+    }
+    function addNortheast(startend) {
+
+        var states = ['CT', 'DE', 'MA', 'ME', 'NH', 'NJ', 'NY', 'PA', 'RI', 'VT']
+        if (startend == true) {
+            var startLocationInput = document.getElementById("start-location-input");
+            var startLocationRadius = document.getElementById("start-location-radius");
+            var startLocationsContainer = document.getElementById("start-locations-container");
+            var startstate = document.getElementById("start-location-input-state")
+
+            states.forEach(function (x) {
+                var hasAL = startlocations.some(function (location) {
+                    return location.state === x;
+                });
+
+                if (hasAL) {
+                    startLocationInput.value = "";
+                    startLocationRadius.value = "";
+                    return
+                }
+                var locationCard = document.createElement("div");
+                locationCard.className = "location-card";
+
+                locationCard.textContent = x;
+
+                var removeButton = document.createElement("button");
+                removeButton.textContent = "X";
+                removeButton.classList.add("Minus");
+                removeButton.id = startlocations.length
+                removeButton.addEventListener("click", function () {
+                    startLocationsContainer.removeChild(locationCard);
+                    console.log(removeButton.id)
+                    startlocations.splice(parseInt(removeButton.id), 1)
+                    var minusButtons = startLocationsContainer.getElementsByClassName("Minus");
+
+                    // Loop through each button and update its ID
+                    for (var i = 0; i < minusButtons.length; i++) {
+                        minusButtons[i].id = i.toString();
+                    }
+                    console.log(startlocations)
+                });
+
+
+                // Get all the button elements with class "Minus" inside the container
+
+                locationCard.appendChild(removeButton);
+
+                startLocationsContainer.appendChild(locationCard);
+                var locationData = {
+                    state: x,
+                    city: "",
+                    lat: 0.0,
+                    lng: 0.0,
+                    radius: 0,
+                };
+                startlocations.push(locationData)
+                console.log(startlocations)
+                // Clear input fields after adding the location
+                startLocationInput.value = "";
+                startLocationRadius.value = "";
+
+
+            });
+        }
+        else {
+            var endLocationInput = document.getElementById("end-location-input");
+            var endLocationRadius = document.getElementById("end-location-radius");
+            var endLocationsContainer = document.getElementById("end-locations-container");
+            var endstate = document.getElementById("end-location-input-state")
+            states.forEach(function (x) {
+                var hasAL = endlocations.some(function (location) {
+                    return location.state === x;
+                });
+
+                if (hasAL) {
+                    endLocationInput.value = "";
+                    endLocationRadius.value = "";
+                    return
+                }
+                var locationCard = document.createElement("div");
+                locationCard.className = "location-card";
+
+                locationCard.textContent = x;
+
+                var removeButton = document.createElement("button");
+                removeButton.textContent = "X";
+                removeButton.classList.add("Minus");
+                removeButton.id = endlocations.length
+                removeButton.addEventListener("click", function () {
+                    endLocationsContainer.removeChild(locationCard);
+                    console.log(removeButton.id)
+                    endlocations.splice(parseInt(removeButton.id), 1)
+                    var minusButtons = endLocationsContainer.getElementsByClassName("Minus");
+
+                    // Loop through each button and update its ID
+                    for (var i = 0; i < minusButtons.length; i++) {
+                        minusButtons[i].id = i.toString();
+                    }
+                    console.log(endlocations)
+                });
+
+
+                // Get all the button elements with class "Minus" inside the container
+
+                locationCard.appendChild(removeButton);
+
+                endLocationsContainer.appendChild(locationCard);
+                var locationData = {
+                    state: x,
+                    city: "",
+                    lat: 0.0,
+                    lng: 0.0,
+                    radius: 0,
+                };
+                endlocations.push(locationData)
+                console.log(endlocations)
+                // Clear input fields after adding the location
+                endLocationInput.value = "";
+                endLocationRadius.value = "";
+            });
+        }
+    }
 
     // Function to add start location to JSON file and display it on the page
     function addStartLocation() {
