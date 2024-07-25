@@ -434,7 +434,7 @@
     var readytoshipwithin = document.getElementById('ready-to-ship').value
     var minpayment = document.getElementById('min-total-pay').value
     var minpaymentpermile = document.getElementById('min-rate-per-mile').value
-    const ip = await getIPAddress();
+    const ip = getIPAddress();
     console.log(trailertype, vehstatus, vehmin, vehmax, deliverydate, readytoshipwithin, minpayment, minpaymentpermile)
     function TrailerType(value) {
         trailertype = value;
@@ -1472,10 +1472,10 @@
             }
         }
     }
-    async function getIPAddress() {
+    function getIPAddress() {
             try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
+                const response = fetch('https://api.ipify.org?format=json');
+                const data = response.json();
                 return data.ip;
             } catch (error) {
                 console.error('Error fetching IP address:', error);
