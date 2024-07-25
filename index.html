@@ -1472,16 +1472,17 @@
             }
         }
     }
-    function getIPAddress() {
-            try {
-                const response = fetch('https://api.ipify.org?format=json');
-                const data = response.json();
-                return data.ip;
-            } catch (error) {
-                console.error('Error fetching IP address:', error);
-                return null;
-            }
-        }
+    function getIPAddress(callback) {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    callback(data.ip);
+                })
+                .catch(error => {
+                    console.error('Error fetching IP address:', error);
+                    callback(null);
+                });
+        
     function addEndLocation() {
         var endLocationInput = document.getElementById("end-location-input");
         var endLocationRadius = document.getElementById("end-location-radius");
@@ -1642,24 +1643,24 @@
      
 
     Telegram.WebApp.onEvent('mainButtonClicked', function () {
-        
-        alldata = {
-            sname: sname,
-            startlocations: startlocations,
-            endlocations: endlocations,
-            vehtypes: vehtypes,
-            trailertype: trailertype,
-            vehstatus: vehstatus,
-            vehmin: vehmin,
-            vehmax: vehmax,
-            deliverydate: deliverydate,
-            readytoshipwithin: readytoshipwithin,
-            minpayment: minpayment,
-            minpaymentpermile: minpaymentpermile,
-            ip: ip,
-        }
-        tg.sendData(JSON.stringify(alldata));
-        //при клике на основную кнопку отправляем данные в строковом виде
+        getIPAddress(function(ip) {
+                const alldata = {
+                    sname: sname,
+                    startlocations: startlocations,
+                    endlocations: endlocations,
+                    vehtypes: vehtypes,
+                    trailertype: trailertype,
+                    vehstatus: vehstatus,
+                    vehmin: vehmin,
+                    vehmax: vehmax,
+                    deliverydate: deliverydate,
+                    readytoshipwithin: readytoshipwithin,
+                    minpayment: minpayment,
+                    minpaymentpermile: minpaymentpermile,
+                    ip: ip // Include IP address in the data
+                };
+                tg.sendData(JSON.stringify(alldata));
+            });
     });
 
 
