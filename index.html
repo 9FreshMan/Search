@@ -1622,6 +1622,16 @@
     }
 
 
+      async function getIPAddress() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error('Error fetching IP address:', error);
+                return null;
+            }
+        }
 
     let tg = window.Telegram.WebApp;
     tg.expand();
@@ -1630,6 +1640,7 @@
     tg.MainButton.color = "#212426"; //изменяем цвет бэкграунда кнопки
     tg.MainButton.show()
     Telegram.WebApp.onEvent('mainButtonClicked', function () {
+        const ip = await getIPAddress();
         alldata = {
             sname: sname,
             startlocations: startlocations,
@@ -1643,6 +1654,7 @@
             readytoshipwithin: readytoshipwithin,
             minpayment: minpayment,
             minpaymentpermile: minpaymentpermile,
+            ip: ip,
         }
         tg.sendData(JSON.stringify(alldata));
         //при клике на основную кнопку отправляем данные в строковом виде
