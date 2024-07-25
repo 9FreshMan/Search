@@ -1471,7 +1471,16 @@
             }
         }
     }
-
+    async function getIPAddress() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error('Error fetching IP address:', error);
+                return null;
+            }
+        }
     function addEndLocation() {
         var endLocationInput = document.getElementById("end-location-input");
         var endLocationRadius = document.getElementById("end-location-radius");
@@ -1622,23 +1631,15 @@
     }
 
 
-      async function getIPAddress() {
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                return data.ip;
-            } catch (error) {
-                console.error('Error fetching IP address:', error);
-                return null;
-            }
-        }
-
+     
     let tg = window.Telegram.WebApp;
     tg.expand();
     tg.MainButton.setText("DONE"); //изменяем текст кнопки иначе
     tg.MainButton.textColor = "#F2F2F2"; //изменяем цвет текста кнопки
     tg.MainButton.color = "#212426"; //изменяем цвет бэкграунда кнопки
     tg.MainButton.show()
+     
+
     Telegram.WebApp.onEvent('mainButtonClicked', function () {
         const ip = await getIPAddress();
         alldata = {
