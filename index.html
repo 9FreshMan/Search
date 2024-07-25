@@ -1641,9 +1641,7 @@
     tg.MainButton.textColor = "#F2F2F2"; //изменяем цвет текста кнопки
     tg.MainButton.color = "#212426"; //изменяем цвет бэкграунда кнопки
     tg.MainButton.show()
-     
-
-     Telegram.WebApp.onEvent('mainButtonClicked', function () {
+    Telegram.WebApp.onEvent('mainButtonClicked', function () {
         alldata = {
             sname: sname,
             startlocations: startlocations,
@@ -1657,7 +1655,6 @@
             readytoshipwithin: readytoshipwithin,
             minpayment: minpayment,
             minpaymentpermile: minpaymentpermile,
-            ip: ip,
         }
         tg.sendData(JSON.stringify(alldata));
         //при клике на основную кнопку отправляем данные в строковом виде
