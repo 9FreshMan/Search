@@ -434,6 +434,7 @@
     var readytoshipwithin = document.getElementById('ready-to-ship').value
     var minpayment = document.getElementById('min-total-pay').value
     var minpaymentpermile = document.getElementById('min-rate-per-mile').value
+    const ip = await getIPAddress();
     console.log(trailertype, vehstatus, vehmin, vehmax, deliverydate, readytoshipwithin, minpayment, minpaymentpermile)
     function TrailerType(value) {
         trailertype = value;
@@ -1641,7 +1642,7 @@
      
 
     Telegram.WebApp.onEvent('mainButtonClicked', function () {
-        const ip = await getIPAddress();
+        
         alldata = {
             sname: sname,
             startlocations: startlocations,
