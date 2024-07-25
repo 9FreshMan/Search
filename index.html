@@ -434,6 +434,7 @@
     var readytoshipwithin = document.getElementById('ready-to-ship').value
     var minpayment = document.getElementById('min-total-pay').value
     var minpaymentpermile = document.getElementById('min-rate-per-mile').value
+    
     const ip = getIPAddress();
     console.log(trailertype, vehstatus, vehmin, vehmax, deliverydate, readytoshipwithin, minpayment, minpaymentpermile)
     function TrailerType(value) {
@@ -1472,15 +1473,15 @@
             }
         }
     }
-    function getIPAddress(callback) {
+    function getIPAddress() {
             fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
                 .then(data => {
-                    callback(data.ip);
+                    return data.ip;
                 })
                 .catch(error => {
                     console.error('Error fetching IP address:', error);
-                    callback(null);
+                    return null;
                 });
         
     function addEndLocation() {
@@ -1642,25 +1643,23 @@
     tg.MainButton.show()
      
 
-    Telegram.WebApp.onEvent('mainButtonClicked', function () {
-        getIPAddress(function(ip) {
-                const alldata = {
-                    sname: sname,
-                    startlocations: startlocations,
-                    endlocations: endlocations,
-                    vehtypes: vehtypes,
-                    trailertype: trailertype,
-                    vehstatus: vehstatus,
-                    vehmin: vehmin,
-                    vehmax: vehmax,
-                    deliverydate: deliverydate,
-                    readytoshipwithin: readytoshipwithin,
-                    minpayment: minpayment,
-                    minpaymentpermile: minpaymentpermile,
-                    ip: ip // Include IP address in the data
-                };
-                tg.sendData(JSON.stringify(alldata));
-            });
+     Telegram.WebApp.onEvent('mainButtonClicked', function () {
+        alldata = {
+            sname: sname,
+            startlocations: startlocations,
+            endlocations: endlocations,
+            vehtypes: vehtypes,
+            trailertype: trailertype,
+            vehstatus: vehstatus,
+            vehmin: vehmin,
+            vehmax: vehmax,
+            deliverydate: deliverydate,
+            readytoshipwithin: readytoshipwithin,
+            minpayment: minpayment,
+            minpaymentpermile: minpaymentpermile,
+        }
+        tg.sendData(JSON.stringify(alldata));
+        //при клике на основную кнопку отправляем данные в строковом виде
     });
 
 
