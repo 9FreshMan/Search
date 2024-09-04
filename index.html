@@ -78,6 +78,7 @@
 
         <!-- Модальный контент -->
         <div class="modal-content">
+            <div style="color: white; font-size: large;">GOOGLE CHROME EXTENSION (beta)</div>
             <img src="IMG_5469.gif" alt="GIF">
             <button class="visit-site-btn"
                 onclick="window.location.href='https://chromewebstore.google.com/detail/central-bot/capnddepklkaoppjjodocgfpdahpnhhi?hl=ru';">Use
@@ -1737,6 +1738,11 @@
     var openModalBtn = document.getElementById("openModalBtn");
     var closeModalBtn = document.getElementById("closeModalBtn");
 
+    // Функция для открытия модального окна
+    function openModal() {
+        modal.style.display = "block";
+    }
+
     // Открываем модальное окно по нажатию на кнопку
     openModalBtn.onclick = function () {
         modal.style.display = "block";
@@ -1746,7 +1752,10 @@
     closeModalBtn.onclick = function () {
         modal.style.display = "none";
     }
-
+    // Открываем модальное окно сразу после загрузки страницы
+    window.onload = function () {
+        openModal();
+    }
     // Закрываем модальное окно, если пользователь кликнул вне его области
     window.onclick = function (event) {
         if (event.target == modal) {
